@@ -1,1 +1,242 @@
-# Resume-maker.github.io
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Free Online Resume Maker – PDF Download</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Create professional resume online. Free resume maker for students and job seekers. Download PDF or Image.">
+<meta name="robots" content="index, follow">
+
+<!-- LIBRARIES -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+<style>
+body{margin:0;font-family:Georgia,serif;background:#d1d5db}
+nav{background:#020617;color:#fff;text-align:center;padding:10px}
+nav a{color:#fff;margin:0 10px;text-decoration:none;font-weight:bold}
+
+.app{display:flex;flex-wrap:wrap}
+.form{width:100%;max-width:360px;background:#fff;padding:14px}
+.preview{flex:1;padding:40px 0}
+
+.resume{
+ width:794px;min-height:1123px;
+ margin:auto;background:#fff;
+ padding:40px;
+ box-shadow:0 0 25px rgba(0,0,0,.3)
+}
+
+input,select,textarea{
+ width:100%;padding:8px;margin-bottom:6px;
+ border:1px solid #999;font-family:inherit
+}
+button{padding:8px 12px;margin:6px 0;cursor:pointer}
+
+.header{text-align:center;border-bottom:2px solid #000;padding-bottom:14px}
+.photo{
+ width:120px;height:150px;object-fit:cover;
+ border:1px solid #000;margin:auto;display:block
+}
+.hide{display:none}
+
+.section-title{
+ margin-top:20px;padding:6px 10px;
+ background:#e5e7eb;border-left:5px solid #000;
+ font-weight:bold;text-transform:uppercase
+}
+
+table{width:100%;border-collapse:collapse}
+th,td{border:1px solid #000;padding:6px;font-size:14px}
+
+.page{max-width:900px;margin:30px auto;background:#fff;padding:30px}
+
+.footer{text-align:center;background:#f1f5f9;padding:20px;margin-top:40px}
+
+.ad-box{
+ max-width:794px;height:90px;margin:15px auto;
+ border:2px dashed #94a3b8;
+ display:flex;align-items:center;justify-content:center;
+ color:#64748b
+}
+
+@media print{
+ .form,nav,.ad-box,.footer,.page{display:none}
+ .resume{box-shadow:none}
+ body{background:#fff}
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+<a href="#home">Home</a>
+<a href="#about">About</a>
+<a href="#contact">Contact</a>
+<a href="#privacy">Privacy</a>
+<a href="#terms">Terms</a>
+</nav>
+
+<!-- ================= HOME / RESUME MAKER ================= -->
+<div id="home" class="app">
+
+<div class="form">
+<h3>Personal Details</h3>
+<input placeholder="Full Name" oninput="setText('name',this.value)">
+<input placeholder="Email" oninput="setText('email',this.value)">
+<input placeholder="Phone" oninput="setText('phone',this.value)">
+<input type="date" oninput="setDOB(this.value)">
+<input placeholder="Address" oninput="setText('address',this.value)">
+<input placeholder="Nationality" oninput="setText('nation',this.value)">
+<input type="file" accept="image/*" onchange="loadImg(event)">
+
+<h3>Career Objective</h3>
+<textarea oninput="setText('objective',this.value)"></textarea>
+
+<h3>Skills</h3>
+<input placeholder="Add Skill" id="skillInput">
+<button onclick="addSkill()">Add Skill</button>
+
+<h3>Education</h3>
+<div id="eduForm"></div>
+<button onclick="addEdu()">+ Add Qualification</button>
+
+<h3>Download</h3>
+<button onclick="downloadPDF()">Download PDF</button>
+<button onclick="downloadImage()">Download Image</button>
+<button onclick="shareResume()">Share</button>
+</div>
+
+<div class="preview">
+<div class="resume" id="resume">
+
+<div class="header">
+<img id="photo" class="photo hide">
+<h1 id="name">Your Name</h1>
+<p>📧 <span id="email"></span> | 📞 <span id="phone"></span> | 📅 <span id="dob"></span></p>
+<p>🏠 <span id="address"></span> | <span id="nation"></span></p>
+</div>
+
+<div class="section-title">Career Objective</div>
+<p id="objective"></p>
+
+<div class="section-title">Skills</div>
+<ul id="skills"></ul>
+
+<div class="section-title">Education</div>
+<table>
+<tr><th>Qualification</th><th>Board</th><th>Year</th><th>%</th></tr>
+<tbody id="eduPreview"></tbody>
+</table>
+
+</div>
+
+<div class="ad-box">Google AdSense Advertisement</div>
+</div>
+</div>
+
+<!-- ================= ABOUT ================= -->
+<div id="about" class="page">
+<h2>About Us</h2>
+<p>
+This Free Online Resume Maker is designed to help students, freshers,
+and job seekers create professional resumes easily.
+</p>
+<p>
+Users can generate resumes and download them in PDF or image format
+without registration.
+</p>
+</div>
+
+<!-- ================= CONTACT ================= -->
+<div id="contact" class="page">
+<h2>Contact Us</h2>
+<p>
+For any questions or suggestions, contact us at:
+</p>
+<p><strong>Email:</strong> yourname@gmail.com</p>
+</div>
+
+<!-- ================= PRIVACY ================= -->
+<div id="privacy" class="page">
+<h2>Privacy Policy</h2>
+<p>
+We do not collect or store any personal information.
+</p>
+<p>
+Google AdSense may use cookies to display ads based on user interests.
+</p>
+<p>
+By using this website, you agree to our privacy policy.
+</p>
+</div>
+
+<!-- ================= TERMS ================= -->
+<div id="terms" class="page">
+<h2>Terms & Conditions</h2>
+<p>
+This website is provided for free for educational purposes.
+</p>
+<p>
+We are not responsible for misuse of resumes generated using this tool.
+</p>
+</div>
+
+<div class="footer">
+© 2025 Free Online Resume Maker
+</div>
+
+<script>
+function setText(id,v){document.getElementById(id).innerText=v||""}
+function setDOB(v){dob.innerText=v?new Date(v).toLocaleDateString('en-GB'):""}
+
+function loadImg(e){
+ let r=new FileReader();
+ r.onload=()=>{photo.src=r.result;photo.classList.remove("hide")}
+ r.readAsDataURL(e.target.files[0])
+}
+
+let skillsArr=[];
+function addSkill(){
+ let v=skillInput.value;
+ if(v){skillsArr.push(v);skills.innerHTML=skillsArr.map(s=>"<li>"+s+"</li>").join("");skillInput.value=""}
+}
+
+let edu=[];
+function addEdu(){
+ let i=edu.length;edu.push({});
+ let d=document.createElement("div");
+ d.innerHTML=`
+ <input placeholder="Qualification" oninput="edu[${i}].q=this.value;renderEdu()">
+ <input placeholder="Board" oninput="edu[${i}].b=this.value;renderEdu()">
+ <input placeholder="Year" oninput="edu[${i}].y=this.value;renderEdu()">
+ <input placeholder="%" oninput="edu[${i}].p=this.value;renderEdu()">
+ <hr>`;
+ eduForm.appendChild(d);
+}
+function renderEdu(){
+ eduPreview.innerHTML="";
+ edu.forEach(e=>{
+  if(e.q)eduPreview.innerHTML+=`<tr><td>${e.q}</td><td>${e.b||""}</td><td>${e.y||""}</td><td>${e.p||""}</td></tr>`;
+ });
+}
+
+function downloadPDF(){
+ html2pdf().from(resume).set({filename:'Resume.pdf'}).save();
+}
+function downloadImage(){
+ html2canvas(resume).then(c=>{
+  let a=document.createElement("a");
+  a.download="Resume.png";a.href=c.toDataURL();a.click();
+ });
+}
+async function shareResume(){
+ const blob=await html2pdf().from(resume).outputPdf('blob');
+ const file=new File([blob],"Resume.pdf",{type:"application/pdf"});
+ navigator.share({files:[file],title:"My Resume"});
+}
+</script>
+
+</body>
+  </html>
